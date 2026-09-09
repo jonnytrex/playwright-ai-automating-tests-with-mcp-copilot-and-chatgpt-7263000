@@ -10,10 +10,13 @@
     "dev": "concurrently \"npm run dev -w frontend\" \"npm run dev -w backend\"",
     "build": "npm run build -w frontend && npm run build -w backend",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "playwright test --grep-invert @seed"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.2",
     "concurrently": "^9.1.0",
     "eslint": "^9.14.0",
     "eslint-plugin-react": "^7.37.2",
