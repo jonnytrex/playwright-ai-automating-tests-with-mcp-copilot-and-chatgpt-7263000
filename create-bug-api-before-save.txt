@@ -1,0 +1,5 @@
+22. [POST] http://localhost:5173/api/login => [200] OK
+23. [GET] http://localhost:5173/api/bugs => [200] OK
+24. [GET] http://localhost:5173/api/bugs => [200] OK
+
+Note: 21 static requests not shown, run with "static" option to see them.
