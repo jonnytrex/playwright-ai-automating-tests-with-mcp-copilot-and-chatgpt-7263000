@@ -35,8 +35,10 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.post("/api/login", (req, res) => {
-  const username = (req.body?.username as string) ?? "";
-  const password = (req.body?.password as string) ?? "";
+  const username =
+    typeof req.body?.username === "string" ? req.body.username : "";
+  const password =
+    typeof req.body?.password === "string" ? req.body.password : "";
   const result = login(username, password);
 
   if (result.success) {
@@ -78,8 +80,8 @@ app.get("/api/bugs", (_req, res) => {
 });
 
 app.get("/api/bugs/:id", (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) {
+  const id = parseBugId(req.params.id);
+  if (id === null) {
     res.status(400).json({ error: "invalid_id", message: "Bug ID must be a number." });
     return;
   }
@@ -92,8 +94,8 @@ app.get("/api/bugs/:id", (req, res) => {
 });
 
 app.put("/api/bugs/:id", (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) {
+  const id = parseBugId(req.params.id);
+  if (id === null) {
     res.status(400).json({ error: "invalid_id", message: "Bug ID must be a number." });
     return;
   }
@@ -137,8 +139,8 @@ app.put("/api/bugs/:id", (req, res) => {
 });
 
 app.delete("/api/bugs/:id", (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) {
+  const id = parseBugId(req.params.id);
+  if (id === null) {
     res.status(400).json({ error: "invalid_id", message: "Bug ID must be a number." });
     return;
   }
@@ -184,3 +186,11 @@ app.post("/api/bugs", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Backend listening on http://localhost:${PORT}`);
 });
+
+function parseBugId(value: string): number | null {
+  if (!/^-?\d+$/.test(value)) {
+    return null;
+  }
+  const id = Number(value);
+  return Number.isSafeInteger(id) ? id : null;
+}
